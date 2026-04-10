@@ -6,3 +6,5 @@ npx shadcn@latest add
 
 a
 
+
+please setup the env also like my env.example and rename into the .env only 
