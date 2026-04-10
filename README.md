@@ -6,13 +6,18 @@ Starter project built with Next.js, TypeScript, Tailwind CSS, shadcn/ui, Zod, an
 
 ```bash
 npx create-next-app@latest ./
+
 npx shadcn@latest init --preset b4BmfG6j0S
 ```
 
 To add more shadcn components later:
 
 ```bash
-npx shadcn@latest add <component-name>
+npx shadcn@latest add 
+
+--- after this ---
+
+press {a} for all and than enter
 ```
 
 ## Install and Run
