@@ -23,7 +23,7 @@ You already have `.env.example`. Create `.env` from it before running DB APIs.
 PowerShell:
 
 ```powershell
-Copy-Item .env.example .env
+Copy-Item .env
 ```
 
 Then ensure `.env` has:

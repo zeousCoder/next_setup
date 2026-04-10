@@ -1,4 +1,5 @@
 // here we can centralize the page routes so that we can use them in the entire application
+// optional 
 
 export const PAGE_ROUTES = {
   HOME: "/",
