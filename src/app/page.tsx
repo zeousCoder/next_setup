@@ -14,7 +14,7 @@ export default function Home() {
     setLoading(true);
     setError(null);
 
-    const response = await apiFetcher<any>("https://dummyjson.com/users", {
+    const response = await apiFetcher<any>("/users", {
       method: "GET",
     });
 

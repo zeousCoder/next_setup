@@ -1,13 +1,14 @@
 import mysql, { Pool, RowDataPacket } from "mysql2/promise";
 import type { QueryValues } from "mysql2";
 
-export type DatabaseKey = "db1" | "db2";
+export type DatabaseKey = "db1" | "db2" | "db3";
 export type DatabaseSelection = DatabaseKey | DatabaseKey[];
 
 // Database URLs from environment variables
 const dbUrls: Record<DatabaseKey, string | undefined> = {
   db1: process.env.MYSQL_URL,
   db2: process.env.MYSQL_URL_1,
+  db3: process.env.MYSQL_URL_2,
 };
 
 // Store connection pools

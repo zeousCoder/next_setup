@@ -1,6 +1,15 @@
 import * as z from "zod";
 import { loginTypes, signUpTypes } from "@/types/auth";
 
+
+const demoEmail =[
+  "demo@admin.com",
+  "demo@user.com",
+  "demo@company.com",
+  "demo@companychild.com",
+  "demo@userchild.com",
+]
+
 const passwordSchema = z
   .string()
   .regex(
@@ -11,13 +20,13 @@ const passwordSchema = z
   .max(32, "Password must be less than 32 characters long");
 
 export const loginSchema: z.ZodType<loginTypes> = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   password: passwordSchema,
 });
 
 export const signUpSchema: z.ZodType<signUpTypes> = z
   .object({
-    email: z.string().email("Invalid email address"),
+    email: z.email("Invalid email address"),
     password: passwordSchema,
     confirmPassword: passwordSchema,
   })

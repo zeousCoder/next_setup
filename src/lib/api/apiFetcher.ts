@@ -1,3 +1,9 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+if (!API_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL is not set");
+}
+
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 interface ApiFetcherOptions<TBody = unknown> {
@@ -34,7 +40,7 @@ function getErrorMessage(error: unknown): string {
 }
 
 export async function apiFetcher<TResponse, TBody = unknown>(
-  url: string,
+  endpoint: string,
   options: ApiFetcherOptions<TBody> = {},
 ): Promise<ApiResponse<TResponse>> {
   const {
@@ -45,6 +51,8 @@ export async function apiFetcher<TResponse, TBody = unknown>(
     next,
     token,
   } = options;
+
+  const url = `${API_URL}${endpoint}`;
 
   const isFormData =
     typeof FormData !== "undefined" && body instanceof FormData;
