@@ -5,23 +5,12 @@ Starter project built with Next.js, TypeScript, Tailwind CSS, shadcn/ui, Zod, an
 ## Project Setup
 
 ```bash
-npx create-next-app@latest ./ --typescript --tailwind --react-compiler --app --src-dir --import-alias "@/*" --no-eslint --use-npm --yes;  npx shadcn@latest init --preset b4BmfG6j0S -y; npx shadcn@latest add -a -y
-```
-
-To add more shadcn components later:
-
-```bash
-npx shadcn@latest add 
-
---- after this ---
-
-press {a} for all and than enter
+npx create-next-app@latest ./ --typescript --tailwind --react-compiler --app --src-dir --import-alias "@/*" --no-eslint --use-npm --yes; npx shadcn@latest init --preset b4BmfG6j0S -y; npx shadcn@latest add -a -y
 ```
 
 ## Install and Run
 
 ```bash
-npm install
 npm run dev
 ```
 
