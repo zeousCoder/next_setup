@@ -5,7 +5,7 @@ Starter project built with Next.js, TypeScript, Tailwind CSS, shadcn/ui, Zod, an
 ## Project Setup
 
 ```bash
-npx create-next-app@latest ./
+npx create-next-app@latest ./ --typescript --tailwind --react-compiler --app --src-dir --import-alias "@/*" --use-npm --yes --no-eslint
 
 npx shadcn@latest init --preset b4BmfG6j0S
 ```

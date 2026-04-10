@@ -15,7 +15,7 @@ export function apiResponse<T>(
       statusCode: statusInfo.code,
       message: customMessage || statusInfo.message,
       description: statusInfo.description,
-      data: data ?? null,
+      data: data ?? null, 
       timestamp: new Date().toISOString(),
     },
     { status: statusInfo.code },
