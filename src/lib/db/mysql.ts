@@ -1,19 +1,21 @@
 import mysql, { Pool, RowDataPacket } from "mysql2/promise";
 import type { QueryValues } from "mysql2";
 
-export type DatabaseKey = "db1" | "db2" | "db3";
+export type DatabaseKey = "db1" | "db2";
 export type DatabaseSelection = DatabaseKey | DatabaseKey[];
+
+type queryDebug = {
+  debug?: boolean;
+};
 
 // Database URLs from environment variables
 const dbUrls: Record<DatabaseKey, string | undefined> = {
   db1: process.env.MYSQL_URL,
   db2: process.env.MYSQL_URL_1,
-  db3: process.env.MYSQL_URL_2,
 };
 
 // Store connection pools
 const pools: Partial<Record<DatabaseKey, Pool>> = {};
-
 
 // Fetch the database URL for a given key.
 
@@ -46,31 +48,58 @@ export async function mySqlConnect(db: DatabaseKey = "db1") {
   return getMySqlPool(db).getConnection();
 }
 
+function buildQuery(query: string, values: QueryValues): string {
+  const vals = [...(Array.isArray(values) ? values : [values])];
+  return query.replace(/\?/g, () => {
+    const val = vals.shift();
+    if (val === null || val === undefined) return "NULL";
+    if (typeof val === "string") return `'${val}'`;
+    return String(val);
+  });
+}
+
 // Execute a SQL query on one or multiple databases.
 export async function sqlQuery<T = RowDataPacket[]>(
   query: string,
   values: QueryValues = [],
   db: DatabaseSelection = "db1",
+  options: queryDebug = {},
 ): Promise<T | Record<DatabaseKey, T>> {
-  // If multiple databases are provided, return an object keyed by database
-  if (Array.isArray(db)) {
-    const results = await Promise.all(
-      db.map(async (database) => {
-        const [rows] = await getMySqlPool(database).query(query, values);
-        return { database, rows: rows as T };
-      }),
-    );
+  const dbLabel = Array.isArray(db) ? db.join(", ") : db;
 
-    return results.reduce(
-      (acc, { database, rows }) => {
-        acc[database] = rows;
-        return acc;
-      },
-      {} as Record<DatabaseKey, T>,
-    );
+  if (options.debug) {
+    console.group(`🔍 sqlQuery [${dbLabel}]`);
+    console.log(buildQuery(query, values));
+    console.groupEnd();
   }
 
-  // Single database query, return rows
-  const [rows] = await getMySqlPool(db).query(query, values);
-  return rows as T;
+  try {
+    // If multiple databases are provided, return an object keyed by database
+    if (Array.isArray(db)) {
+      const results = await Promise.all(
+        db.map(async (database) => {
+          const [rows] = await getMySqlPool(database).query(query, values);
+          return { database, rows: rows as T };
+        }),
+      );
+
+      return results.reduce(
+        (acc, { database, rows }) => {
+          acc[database] = rows;
+          return acc;
+        },
+        {} as Record<DatabaseKey, T>,
+      );
+    }
+
+    // Single database query, return rows
+    const [rows] = await getMySqlPool(db).query(query, values);
+    return rows as T;
+  } catch (error: any) {
+    console.group(`❌ sqlQuery Error [${dbLabel}]`);
+    console.error(buildQuery(query, values));
+    console.error("Message:", error.message);
+    console.groupEnd();
+    throw error;
+  }
 }

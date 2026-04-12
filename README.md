@@ -31,6 +31,7 @@ Then ensure `.env` has:
 ```env
 MYSQL_URL=mysql://root:root@127.0.0.1:3306/portal1
 MYSQL_URL_1=mysql://root:root@127.0.0.2:3306/portal
+NEXT_PUBLIC_API_URL=https://dummyjson.com
 ```
 
 ## Scripts
@@ -64,8 +65,6 @@ next_setup/
 │  ├─ lib/
 │  │  ├─ api/
 │  │  │  ├─ apiFetcher.ts
-│  │  │  ├─ apiResponse.ts
-│  │  │  └─ apiHandler.ts
 │  │  ├─ db/
 │  │  │  ├─ mysql.ts
 │  │  │  └─ sql_log.sql

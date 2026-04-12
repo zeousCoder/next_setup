@@ -19,7 +19,7 @@ export const HTTP_STATUS_MESSAGE = {
   BAD_REQUEST: "Bad Request",
   UNAUTHORIZED: "Unauthorized",
   FORBIDDEN: "Forbidden",
-  NOT_FOUND: "Not Found",
+  NOT_FOUND: "Not Found", 
   INTERNAL_SERVER_ERROR: "Internal Server Error",
   BAD_GATEWAY: "Bad Gateway",
   SERVICE_UNAVAILABLE: "Service Unavailable",
@@ -51,12 +51,12 @@ type HttpStatusResponse = {
 
 // Combined HTTP Status Response (Auto-generated)
 export const HTTP_STATUS_RESPONSE: Record<HttpStatusKey, HttpStatusResponse> =
-  Object.keys(HTTP_STATUS_CODE).reduce(
-    (acc, key) => {
+  Object.entries(HTTP_STATUS_CODE).reduce(
+    (acc, [key, code]) => {
       const typedKey = key as HttpStatusKey;
 
       acc[typedKey] = {
-        code: HTTP_STATUS_CODE[typedKey],
+        code,
         message: HTTP_STATUS_MESSAGE[typedKey],
         description: HTTP_STATUS_DESCRIPTION[typedKey],
       };
