@@ -10,12 +10,13 @@ type Column<T> = {
   header: string;
 };
 
-type GlobalDownloaderProps<T extends Record<string, any>> = {
+export type GlobalDownloaderProps<T extends Record<string, any>> = {
   data: T[];
   fileName?: string;
-  columns?: Column<T>[]; // Optional column configuration
+  columns?: Column<T>[];
   variant?: "default" | "secondary" | "outline" | "ghost";
   size?: "default" | "sm" | "lg" | "icon";
+  name?: string;
 };
 
 function convertToCSV<T extends Record<string, any>>(
@@ -66,7 +67,7 @@ function downloadCSV(csv: string, fileName: string) {
   URL.revokeObjectURL(url);
 }
 
-export default function GlobalDownloader<T extends Record<string, any>>({
+export default function GlobalCSVDownloader<T extends Record<string, any>>({
   data,
   fileName = "download.csv",
   columns,

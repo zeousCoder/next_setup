@@ -432,6 +432,174 @@ try {
 
 ---
 
+## 8. `GlobalDownloader` — `src/components/download/GlobalDownloader.tsx`
+
+Downloads any array of data as a **CSV file**. Works with any shape of data — pass column config to control which fields are exported and what the headers are called.
+
+**Props**
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `T[]` | — | Array of objects to export |
+| `columns` | `{ key: keyof T, header: string }[]` | all keys | Which fields to include and their CSV headers |
+| `fileName` | `string` | `"download.csv"` | Output file name |
+| `name` | `string` | `""` | Label shown on the button e.g. `"Users"` → "Download Users" |
+| `variant` | `"default" \| "secondary" \| "outline" \| "ghost"` | `"secondary"` | Button style |
+| `size` | `"default" \| "sm" \| "lg" \| "icon"` | `"sm"` | Button size |
+
+---
+
+### Basic — download all fields
+```tsx
+import GlobalDownloader from "@/components/download/GlobalDownloader";
+
+<GlobalDownloader
+  data={users}
+  fileName="users.csv"
+  name="Users"
+/>
+// Downloads all keys from each user object as columns
+```
+
+### With specific columns (most common usage)
+```tsx
+<GlobalDownloader
+  data={users}
+  fileName="users-export.csv"
+  name="Users"
+  columns={[
+    { key: "id",    header: "Sr. No." },
+    { key: "name",  header: "Full Name" },
+    { key: "email", header: "Email Address" },
+    { key: "role",  header: "Role" },
+  ]}
+/>
+// CSV will only have these 4 columns with these exact header names
+```
+
+### With sequential Sr. No. (not DB id)
+```tsx
+// Map the data first to inject a sequential number
+<GlobalDownloader
+  data={filteredRows.map((item, index) => ({ ...item, sr_no: index + 1 }))}
+  fileName="permissions.csv"
+  name="Permissions"
+  columns={[
+    { key: "sr_no",       header: "Sr. No." },
+    { key: "cat_name",    header: "Category Name" },
+    { key: "cat_status",  header: "Status" },
+  ]}
+/>
+```
+
+### With filtered data (only download what's visible)
+```tsx
+const [search, setSearch] = useState("");
+
+const filtered = data.filter((item) =>
+  item.name.toLowerCase().includes(search.toLowerCase())
+);
+
+<GlobalDownloader
+  data={filtered}   // always reflects current search/filter
+  fileName="filtered-results.csv"
+  name="Results"
+  columns={[
+    { key: "name",   header: "Name" },
+    { key: "status", header: "Status" },
+  ]}
+/>
+```
+
+### With custom button style
+```tsx
+<GlobalDownloader
+  data={orders}
+  fileName="orders.csv"
+  name="Orders"
+  variant="outline"
+  size="default"
+/>
+```
+
+> **Note:** If `data` is empty, a warning toast fires and no file is downloaded.
+
+---
+
+## 9. `DownloadChart` — `src/components/download/DownloadChart.tsx`
+
+Downloads any chart (or any DOM element) as a **PNG image**. Pass a `ref` pointing to the container div that wraps your chart.
+
+**Props**
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `containerRef` | `RefObject<HTMLDivElement \| null>` | — | Ref to the div wrapping the chart |
+| `fileName` | `string` | `"chart"` | Output file name (`.png` is added automatically) |
+| `className` | `string` | — | Extra classes on the button |
+
+---
+
+### Basic usage
+```tsx
+"use client";
+import { useRef } from "react";
+import DownloadChart from "@/components/download/DownloadChart";
+import { PieChart, Pie } from "recharts";
+
+export default function MyChart() {
+  const chartRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div>
+      <DownloadChart containerRef={chartRef} fileName="my-chart" />
+
+      {/* Wrap your chart in the ref div */}
+      <div ref={chartRef} className="mx-auto w-fit">
+        <PieChart width={300} height={300}>
+          <Pie data={data} dataKey="value" />
+        </PieChart>
+      </div>
+    </div>
+  );
+}
+```
+
+### With shadcn/ui ChartContainer
+```tsx
+"use client";
+import { useRef } from "react";
+import { ChartContainer } from "@/components/ui/chart";
+import DownloadChart from "@/components/download/DownloadChart";
+
+export default function SalesChart() {
+  const chartRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Sales</CardTitle>
+        <DownloadChart containerRef={chartRef} fileName="sales-chart" />
+      </CardHeader>
+      <CardContent>
+        <div ref={chartRef} className="mx-auto w-fit">
+          <ChartContainer config={chartConfig} className="h-[250px]">
+            {/* your chart here */}
+          </ChartContainer>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+> **Tips:**
+> - Add `className="mx-auto w-fit"` to the ref div so the downloaded image is tight around the chart (no extra whitespace).
+> - Output is **2× retina quality** PNG with white background.
+> - The button shows a spinner while the image is being generated.
+
+---
+
 ## Quick Reference
 
 | Method | Where | Use for |
@@ -440,5 +608,7 @@ try {
 | `apiFetcher` | `src/lib/api/apiFetcher.ts` | Calling external/internal REST APIs |
 | `serialize` | `src/lib/utils.ts` | Sanitize DB results before passing to client |
 | `cn` | `src/lib/utils.ts` | Merge Tailwind classes conditionally |
+| `GlobalDownloader` | `src/components/download/GlobalDownloader.tsx` | Download any data array as CSV |
+| `DownloadChart` | `src/components/download/DownloadChart.tsx` | Download any chart/DOM element as PNG |
 | `getMySqlPool` | `src/lib/db/mysql.ts` | Direct pool access (advanced) |
 | `mySqlConnect` | `src/lib/db/mysql.ts` | Manual transactions only |
