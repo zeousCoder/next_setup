@@ -3,6 +3,8 @@
 import { sqlQuery } from "@/lib/db/mysql";
 import { serialize } from "@/lib/utils";
 
+// tbl_permission_category
+
 export async function getCategory() {
   try {
     const response = await sqlQuery(
@@ -127,5 +129,16 @@ export async function updateCategory(
   } catch (error: any) {
     console.error("Error updating category:", error);
     throw new Error(error.message || "Failed to update category");
+  }
+}
+
+//  tbl_permission
+export async function getPermission() {
+  try {
+    const response = await sqlQuery("SELECT * FROM tbl_permission", [], "db1");
+    return serialize(response);
+  } catch (error: any) {
+    console.error(error);
+    throw new Error(error.message || "Failed to fetch permissions");
   }
 }

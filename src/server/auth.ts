@@ -1,5 +1,4 @@
 import { apiFetcher } from "@/lib/api/apiFetcher";
-import { ApiError } from "@/lib/api/apiHandler";
 import { cookies } from "next/headers";
 
 export async function getAuthSesstion() {

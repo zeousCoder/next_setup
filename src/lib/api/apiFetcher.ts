@@ -4,7 +4,8 @@ import {
   HttpStatusKey,
 } from "@/constants/httpStatus";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
 const SERVER_TOKEN = process.env.SERVER_TOKEN;
 
 if (!API_URL) {
@@ -177,9 +178,15 @@ export async function apiFetcher<TResponse, TBody = unknown>(
         }
       }
 
-      // If upstream already follows standardized format
+      // If upstream already follows standardized format, enrich with description + timestamp
       if (isApiResponseShape<TResponse>(data)) {
-        return data;
+        const statusKey = mapStatusCodeToKey(data.statusCode);
+        const statusInfo = HTTP_STATUS_RESPONSE[statusKey];
+        return {
+          ...data,
+          description: data.description ?? statusInfo.description,
+          timestamp: data.timestamp ?? new Date().toISOString(),
+        };
       }
 
       const statusKey = mapStatusCodeToKey(res.status);

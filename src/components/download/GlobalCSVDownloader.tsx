@@ -71,7 +71,7 @@ export default function GlobalCSVDownloader<T extends Record<string, any>>({
   data,
   fileName = "download.csv",
   columns,
-  variant = "secondary",
+  variant = "outline",
   size = "sm",
   name = "",
 }: GlobalDownloaderProps<T>) {

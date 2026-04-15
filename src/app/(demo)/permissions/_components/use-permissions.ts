@@ -3,6 +3,7 @@ import {
   deleteCategory,
   createCategory,
   updateCategory,
+  getPermission,
 } from "./permissions-action";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -10,6 +11,15 @@ import { toast } from "sonner";
 
 export const usePermissions = () => {
   const queryClient = useQueryClient();
+
+  const {
+    data: permissionData,
+    isLoading: permissionIsLoading,
+    error: permissionError,
+  } = useQuery({
+    queryKey: ["permission"],
+    queryFn: () => getPermission(),
+  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["permissions"],
@@ -69,6 +79,9 @@ export const usePermissions = () => {
 
   return {
     data,
+    permissionData,
+    permissionIsLoading,
+    permissionError,
     isLoading,
     error,
     deleteCategoryMutation,

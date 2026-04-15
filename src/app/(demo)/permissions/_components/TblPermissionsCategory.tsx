@@ -34,7 +34,7 @@ import {
 import GlobalCSVDownloader from "@/components/download/GlobalCSVDownloader";
 import CreatePermissionButton from "./CreatePermissionButton";
 import DataTable from "@/components/datatable/DataTable";
-import { createColumns } from "@/components/datatable/Column";
+import { ColumnDef, createColumns } from "@/components/datatable/Column";
 
 type PermissionCategory = {
   id: number;
@@ -217,9 +217,7 @@ export default function TblPermissionsCategory() {
         />
       </FieldGroup>
 
-      {error && (
-        <p className="text-sm text-destructive">{error.message}</p>
-      )}
+      {error && <p className="text-sm text-destructive">{error.message}</p>}
 
       <DataTable
         data={filtered}
