@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { usePermissions } from "./use-permissions";
 import { Button } from "@/components/ui/button";
 import { Trash2Icon, XIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +34,7 @@ import GlobalCSVDownloader from "@/components/download/GlobalCSVDownloader";
 import CreatePermissionButton from "./CreatePermissionButton";
 import DataTable from "@/components/datatable/DataTable";
 import { ColumnDef, createColumns } from "@/components/datatable/Column";
+import { usePermissionCategory } from "../_hooks/use-permission-category";
 
 type PermissionCategory = {
   id: number;
@@ -44,7 +44,8 @@ type PermissionCategory = {
 };
 
 export default function TblPermissionsCategory() {
-  const { data, isLoading, error, deleteCategoryMutation } = usePermissions();
+  const { data, isLoading, error, deleteCategoryMutation } =
+    usePermissionCategory();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "Y" | "N">("all");

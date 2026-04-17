@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import TanstackProvider from "@/providers/TanstackProvider";
 import { GLOBAL_CONSTANTS } from "@/constants/globalConstants";
+import { SessionProvider } from "next-auth/react";
 
 const loraHeading = Lora({ subsets: ["latin"], variable: "--font-heading" });
 
@@ -36,19 +37,21 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <TanstackProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <TooltipProvider>
-              <Header />
-              {children}
-              <Toaster richColors position="top-right" />
-              <Footer />
-            </TooltipProvider>
-          </ThemeProvider>
+          <SessionProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <TooltipProvider>
+                <Header />
+                {children}
+                <Toaster richColors position="top-right" />
+                <Footer />
+              </TooltipProvider>
+            </ThemeProvider>
+          </SessionProvider>
         </TanstackProvider>
       </body>
     </html>

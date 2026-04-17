@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PencilIcon, PlusIcon } from "lucide-react";
-import { usePermissions } from "./use-permissions";
+import { usePermissionCategory } from "../_hooks/use-permission-category";
 
 const USER_TYPES = [
   { value: "A", label: "Admin" },
@@ -54,7 +54,8 @@ export default function CreatePermissionButton({ initialData }: Props) {
   const [catStatus, setCatStatus] = useState<"Y" | "N">("Y");
   const [selectedTypes, setSelectedTypes] = useState<UserTypeValue[]>([]);
 
-  const { createCategoryMutation, updateCategoryMutation } = usePermissions();
+  const { createCategoryMutation, updateCategoryMutation } =
+    usePermissionCategory();
   const isPending = isEdit
     ? updateCategoryMutation.isPending
     : createCategoryMutation.isPending;

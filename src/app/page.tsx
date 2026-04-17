@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { apiFetcher } from "@/lib/api/apiFetcher";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
 export default function Home() {

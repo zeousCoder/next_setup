@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { usePermissions } from "./use-permissions";
+import { usePermissions } from "../_hooks/use-permissions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";

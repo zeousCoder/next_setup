@@ -3,33 +3,23 @@ import {
   deleteCategory,
   createCategory,
   updateCategory,
-  getPermission,
-} from "./permissions-action";
+} from "../_actions/permissions-category-action";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export const usePermissions = () => {
+export const usePermissionCategory = () => {
   const queryClient = useQueryClient();
 
-  const {
-    data: permissionData,
-    isLoading: permissionIsLoading,
-    error: permissionError,
-  } = useQuery({
-    queryKey: ["permission"],
-    queryFn: () => getPermission(),
-  });
-
   const { data, isLoading, error } = useQuery({
-    queryKey: ["permissions"],
+    queryKey: ["permission-category"],
     queryFn: () => getCategory(),
   });
 
   const deleteCategoryMutation = useMutation({
     mutationFn: (id: number) => deleteCategory(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["permissions"] });
+      queryClient.invalidateQueries({ queryKey: ["permission-category"] });
       toast.success("Category deleted successfully");
     },
     onError: (error: any) => {
@@ -48,7 +38,7 @@ export const usePermissions = () => {
       utype: string[];
     }) => createCategory(cat_name, cat_status, utype),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["permissions"] });
+      queryClient.invalidateQueries({ queryKey: ["permission-category"] });
       toast.success("Category created successfully");
     },
     onError: (error: any) => {
@@ -69,7 +59,7 @@ export const usePermissions = () => {
       utype: string[];
     }) => updateCategory(id, cat_name, cat_status, utype),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["permissions"] });
+      queryClient.invalidateQueries({ queryKey: ["permission-category"] });
       toast.success("Category updated successfully");
     },
     onError: (error: any) => {
@@ -79,9 +69,6 @@ export const usePermissions = () => {
 
   return {
     data,
-    permissionData,
-    permissionIsLoading,
-    permissionError,
     isLoading,
     error,
     deleteCategoryMutation,
