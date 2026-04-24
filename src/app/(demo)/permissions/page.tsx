@@ -1,14 +1,11 @@
-"use client"
+import { auth } from "@/lib/auth";
 import PermissionsTab from "./_components/PermissionsTab";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
-export default function PermissionsPage() {
-  const { data: session } = useSession();
-  const router = useRouter();
-
+export default async function PermissionsPage() {
+  const session = await auth();
   if (!session) {
-    router.push("/login");
+    redirect("/login");
   }
   return (
     <div>

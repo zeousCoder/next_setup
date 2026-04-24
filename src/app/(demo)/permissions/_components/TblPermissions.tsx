@@ -79,7 +79,7 @@ const columns = createColumns<Permission>([
 ]);
 
 export default function TblPermissions() {
-  const { permissionData, permissionIsLoading, permissionError } =
+  const { data: permissionData, isLoading: permissionIsLoading, error: permissionError } =
     usePermissions();
 
   const [search, setSearch] = useState("");

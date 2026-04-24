@@ -1,24 +1,27 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { apiFetcher } from "@/lib/api/apiFetcher";
-import { useSession } from "next-auth/react";
+import { getSession } from "@/session/auth-session";
 import { toast } from "sonner";
 
-export default function Home() {
-  const cronTest = async () => {
-    const res = await apiFetcher("/api/crons/test-cron", {
-      method: "POST",
-    });
-    console.log(res);
-    if (res.success) {
-      toast.success(res.message);
-    } else {
-      toast.error(res.message);
-    }
-  };
+export default async function Home() {
+  // const cronTest = async () => {
+  //   const res = await apiFetcher("/api/crons/test-cron", {
+  //     method: "POST",
+  //   });
+  //   console.log(res);
+  //   if (res.success) {
+  //     toast.success(res.message);
+  //   } else {
+  //     toast.error(res.message);
+  //   }
+  // };
+
+  // const { data: session } = useSession();
+  const session = await getSession();
   return (
     <div>
-      <Button onClick={cronTest}>Test Cron</Button>
+      <pre>{JSON.stringify(session, null, 2)}</pre>
+      {/* <Button onClick={cronTest}>Test Cron</Button> */}
     </div>
   );
 }

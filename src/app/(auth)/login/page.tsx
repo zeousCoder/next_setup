@@ -1,5 +1,6 @@
-import Login from "./_components/Login";
+import Login from "@/components/auth/login/Login";
+import React from "react";
 
-export default async function LoginPage() {
+export default function LoginPage() {
   return <Login />;
 }
